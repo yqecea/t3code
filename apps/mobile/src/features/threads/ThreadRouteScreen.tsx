@@ -33,6 +33,8 @@ import { dismissGitActionResult, useGitActionProgress } from "../../state/use-vc
 import { vcsEnvironment } from "../../state/vcs";
 
 import { EmptyState } from "../../components/EmptyState";
+import { ControlPillMenu } from "../../components/ControlPill";
+import { SymbolView } from "../../components/AppSymbol";
 import {
   AndroidScreenHeader,
   type AndroidHeaderAction,
@@ -707,6 +709,17 @@ function ThreadRouteContent(
     if (Platform.OS !== "android") return [];
 
     const actions: AndroidHeaderAction[] = [];
+    actions.push({
+      accessibilityLabel: "Open browser",
+      icon: "globe",
+      onPress: () => {
+        if (selectedThread)
+          navigation.navigate("ThreadBrowser", {
+            environmentId: String(selectedThread.environmentId),
+            threadId: String(selectedThread.id),
+          });
+      },
+    });
     if (props.onReturnToThread) {
       actions.push({
         accessibilityLabel: "Return to chat",
@@ -750,6 +763,8 @@ function ThreadRouteContent(
     props.onReturnToThread,
     selectedThreadCwd,
     selectedThreadProject?.workspaceRoot,
+    selectedThread,
+    navigation,
   ]);
 
   const handleEditFailedCreation = useCallback(async () => {
@@ -968,7 +983,40 @@ function ThreadRouteContent(
                   else navigation.dispatch(StackActions.replace("Home"));
                 }
           }
-          actions={androidHeaderActions}
+          actions={androidHeaderActions.filter(
+            (action) => action.icon === "globe" || action.icon === "terminal",
+          )}
+          trailing={
+            <ControlPillMenu
+              accessibilityLabel="More thread tools"
+              actions={androidHeaderActions
+                .filter((action) => action.icon !== "globe" && action.icon !== "terminal")
+                .map((action) => ({
+                  id: action.accessibilityLabel,
+                  title: action.accessibilityLabel,
+                  attributes: { disabled: action.disabled ?? false },
+                }))}
+              onPressAction={({ nativeEvent }) =>
+                androidHeaderActions
+                  .find((action) => action.accessibilityLabel === nativeEvent.event)
+                  ?.onPress()
+              }
+            >
+              <View
+                accessible
+                accessibilityRole="button"
+                accessibilityLabel="More thread tools"
+                className="size-11 items-center justify-center rounded-full bg-subtle"
+              >
+                <SymbolView
+                  name="ellipsis"
+                  size={20}
+                  tintColorClassName="accent-foreground"
+                  type="monochrome"
+                />
+              </View>
+            </ControlPillMenu>
+          }
           hideBottomBorder={materialYouStyleLayoutActive}
         />
       ) : null}

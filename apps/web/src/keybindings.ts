@@ -9,8 +9,9 @@ import {
   type ThreadJumpKeybindingCommand,
 } from "@t3tools/contracts";
 import { isMacPlatform } from "./lib/utils";
+import { browserOwnsInputEvent, type InputEventTarget } from "./lib/inputOwnership";
 
-export interface ShortcutEventLike {
+export interface ShortcutEventLike extends InputEventTarget {
   getModifierState?: (key: "AltGraph") => boolean;
   type?: string;
   code?: string;
@@ -229,6 +230,7 @@ export function resolveShortcutCommand(
   keybindings: ResolvedKeybindingsConfig,
   options?: ShortcutMatchOptions,
 ): KeybindingCommand | null {
+  if (browserOwnsInputEvent(event)) return null;
   const platform = resolvePlatform(options);
   const context = resolveContext(options);
 

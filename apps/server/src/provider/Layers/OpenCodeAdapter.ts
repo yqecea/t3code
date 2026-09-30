@@ -2833,7 +2833,7 @@ export function makeOpenCodeAdapter(
                 directory,
                 serverUrl,
                 ...(serverPassword ? { serverPassword } : {}),
-                environment: McpProviderSession.withAgentDeviceEnvironment(
+                environment: McpProviderSession.withAgentToolEnvironment(
                   options?.environment ?? process.env,
                   mcpSession,
                 ),

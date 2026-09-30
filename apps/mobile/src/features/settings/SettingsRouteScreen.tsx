@@ -599,8 +599,36 @@ function GeneralSettingsSection() {
     <SettingsSection title="General">
       <SettingsRow icon="folder" label="Project Grouping" target="SettingsProjectGrouping" />
       <AutoSettleSettingsRows />
+      <AgentBrowserSettingsRow />
       <SettingsRow icon="chart.bar.xaxis" label="Usage" target="SettingsUsage" />
     </SettingsSection>
+  );
+}
+
+function AgentBrowserSettingsRow() {
+  const { environments } = useEnvironments();
+  const updateSettings = useAtomCommand(serverEnvironment.updateSettings, {
+    label: "agent browser access settings",
+    reportFailure: true,
+  });
+  const targets = environments.filter(supportsSharedSettingsSync);
+  if (targets.length === 0) return null;
+  return (
+    <SettingsSwitchRow
+      icon="globe"
+      label="Agent browser access"
+      subtitle="Allow agents to open and control browsers on connected environments."
+      value={targets.every(
+        (environment) => environment.serverConfig?.settings.enableAgentBrowserAccess === true,
+      )}
+      onValueChange={(enabled) => {
+        for (const environment of targets)
+          void updateSettings({
+            environmentId: environment.environmentId,
+            input: { patch: { enableAgentBrowserAccess: enabled } },
+          });
+      }}
+    />
   );
 }
 

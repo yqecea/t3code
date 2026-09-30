@@ -330,6 +330,14 @@
     "./cliRelease": {
       "types": "./src/cliRelease.ts",
       "import": "./src/cliRelease.ts"
+    },
+    "./agentBrowserCommand": {
+      "types": "./src/agentBrowserCommand.ts",
+      "import": "./src/agentBrowserCommand.ts"
+    },
+    "./agentBrowserRuntime": {
+      "types": "./src/agentBrowserRuntime.ts",
+      "import": "./src/agentBrowserRuntime.ts"
     }
   },
   "scripts": {

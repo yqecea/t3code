@@ -27,6 +27,7 @@ import { HardwareKeyboardCommandProvider } from "./features/keyboard/HardwareKey
 import { ReviewCommentComposerSheet } from "./features/review/ReviewCommentComposerSheet";
 import { ReviewSheet } from "./features/review/ReviewSheet";
 import { ThreadTerminalRouteScreen } from "./features/terminal/ThreadTerminalRouteScreen";
+import { ThreadBrowserRouteScreen } from "./features/browser/ThreadBrowserRouteScreen";
 import { GitBranchesSheet } from "./features/threads/git/GitBranchesSheet";
 import { GitCommitSheet } from "./features/threads/git/GitCommitSheet";
 import { GitConfirmSheet } from "./features/threads/git/GitConfirmSheet";
@@ -515,6 +516,11 @@ export const RootStack = createNativeStackNavigator({
       screen: ThreadTerminalRouteScreen,
       linking: `${THREAD_LINKING_PREFIX}/terminal`,
       options: SOLID_HEADER_OPTIONS,
+    }),
+    ThreadBrowser: createNativeStackScreen({
+      screen: ThreadBrowserRouteScreen,
+      linking: `${THREAD_LINKING_PREFIX}/browser`,
+      options: { ...SOLID_HEADER_OPTIONS, title: "Browser" },
     }),
     ThreadReview: createNativeStackScreen({
       screen: ReviewSheet,

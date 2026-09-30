@@ -1,4 +1,4 @@
-import { withAgentDeviceEnvironment } from "../../mcp/McpProviderSession.ts";
+import { withAgentToolEnvironment } from "../../mcp/McpProviderSession.ts";
 import { AntigravitySettings, ProviderDriverKind, ProviderSetupError } from "@t3tools/contracts";
 import { HostProcessPlatform } from "@t3tools/shared/hostProcess";
 import * as Crypto from "effect/Crypto";
@@ -163,7 +163,7 @@ export const AntigravityDriver: ProviderDriver<AntigravitySettings, AntigravityD
             installation: executable,
             profile,
             cwd: input.cwd,
-            baseEnv: withAgentDeviceEnvironment(processEnvironment, input),
+            baseEnv: withAgentToolEnvironment(processEnvironment, input),
             auth,
           }),
         }).pipe(Effect.provideService(Crypto.Crypto, crypto));

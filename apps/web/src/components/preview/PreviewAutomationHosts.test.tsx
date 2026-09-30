@@ -40,7 +40,9 @@ vi.mock("~/localApi", () => ({
 vi.mock("~/env", () => ({ isElectron: true }));
 vi.mock("~/state/environments", () => ({
   useEnvironments: () => ({ environments: [{ environmentId }] }),
+  usePrimaryEnvironmentId: () => environmentId,
 }));
+vi.mock("~/browser/previewRuntime", () => ({ previewRuntimeForEnvironment: () => "desktop" }));
 vi.mock("~/state/preview", () => ({
   previewEnvironment: {
     automationRequests: () => requestsAtom,
@@ -158,7 +160,7 @@ describe("PreviewAutomationHosts open", () => {
 
     expect(mocks.open).toHaveBeenCalledExactlyOnceWith({
       environmentId,
-      input: { threadId, viewport, profileId: "work" },
+      input: { threadId, runtime: "desktop", viewport, profileId: "work" },
     });
     expect(mocks.getClientSettings).toHaveBeenCalledOnce();
     await expect(response.promise).resolves.toMatchObject({ requestId: "open-request", ok: true });

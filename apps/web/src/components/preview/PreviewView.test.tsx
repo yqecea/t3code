@@ -38,6 +38,7 @@ const mocks = vi.hoisted(() => ({
 }));
 
 const EMPTY_HISTORY: never[] = [];
+vi.mock("~/browser/previewRuntime", () => ({ previewRuntimeForEnvironment: () => "desktop" }));
 
 const STUB_BROWSER_DEFAULTS = {
   viewport: FILL_PREVIEW_VIEWPORT,
@@ -138,6 +139,7 @@ vi.mock("~/previewStateStore", () => ({
 }));
 
 vi.mock("~/state/environments", () => ({
+  usePrimaryEnvironmentId: () => null,
   useEnvironment: () => ({ label: "WSL" }),
   useEnvironmentHttpBaseUrl: () => "http://172.25.85.75:3773",
 }));

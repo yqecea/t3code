@@ -103,7 +103,6 @@ import {
 } from "~/hooks/useSettings";
 
 import {
-  SettingsUnavailableGroup,
   SettingResetButton,
   SettingsPageContainer,
   SettingsRow,
@@ -1317,17 +1316,15 @@ function BrowserProfilesSetting({ disabled }: { readonly disabled: boolean }) {
 }
 
 export function IntegrationsSettingsPanel() {
-  // Client-local preview defaults are editable only where the preview exists.
-  const previewDefaultsDisabled = !isElectron;
   const previewDefaults = (
     <>
-      <BrowserProfilesSetting disabled={previewDefaultsDisabled} />
-      <BrowserViewportSetting disabled={previewDefaultsDisabled} />
-      <BrowserZoomSetting disabled={previewDefaultsDisabled} />
-      <BrowserAppearanceSetting disabled={previewDefaultsDisabled} />
-      <BrowserRecordingFrameRateSetting disabled={previewDefaultsDisabled} />
-      <BrowserLinkTargetSetting disabled={previewDefaultsDisabled} />
-      <BrowserAutoShowFloatingPreviewSetting disabled={previewDefaultsDisabled} />
+      <BrowserProfilesSetting disabled={false} />
+      <BrowserViewportSetting disabled={false} />
+      <BrowserZoomSetting disabled={!isElectron} />
+      <BrowserAppearanceSetting disabled={!isElectron} />
+      <BrowserRecordingFrameRateSetting disabled={!isElectron} />
+      <BrowserLinkTargetSetting disabled={false} />
+      <BrowserAutoShowFloatingPreviewSetting disabled={false} />
     </>
   );
 
@@ -1337,13 +1334,7 @@ export function IntegrationsSettingsPanel() {
           the preview defaults below are device-local and ignore it. */}
       <ProjectDefaultsSettings category="integrations" />
       <SettingsSection id="browser" title="Browser">
-        {previewDefaultsDisabled ? (
-          <SettingsUnavailableGroup message="Only available in the desktop app.">
-            {previewDefaults}
-          </SettingsUnavailableGroup>
-        ) : (
-          previewDefaults
-        )}
+        {previewDefaults}
       </SettingsSection>
       <DeviceIntegrationSettings />
     </SettingsPageContainer>
